@@ -1,36 +1,28 @@
 <template>	
 	<div>
-		<BaseBoardDetail :boardInfo="boardInfo"/>
+		<BaseBoardDetail :boardInfo="dataObj.boardInfo"/>
 	</div>
 </template>
 
-<script>
+<script setup>
+	import { ref } from 'vue';
+	import { useRoute, useRouter } from 'vue-router';
 	import axios from 'axios';
-	import BaseBoardDetail from '@/components/board/BaseBoardDetail';
+	import BaseBoardDetail from '@/components/board/BaseBoardDetail.vue';
 
-	export default {
-		name : 'QnABoardDetail',
-		components : {
-			BaseBoardDetail,
-		},
-		data() {
-			return {
-				boardInfo : new Object(),
-			};
-		},
-		created() {
-			const boardSeq = this.$route.params.boardSeq;
-			
-			axios.get('/boards/qna/list/'.concat(boardSeq))
-				.then(res=> {
-					const data = res.data;
-
-					this.$data.boardInfo = data;
-				})
-				.catch(error=> {
-					alert(error.message);
-					this.$router.go(-1);
-				});
-		},
-	}
+	const route = useRoute();
+	const router = useRouter();
+	const dataObj = ref({
+		boardInfo : new Object(),
+	});
+	const boardSeq = route.params.boardSeq;
+	
+	axios.get('/boards/qna/list/'.concat(boardSeq))
+		.then(res=> {
+			dataObj.value.boardInfo = res.data;
+		})
+		.catch(error=> {
+			alert(error.message);
+			router.go(-1);
+		});
 </script>

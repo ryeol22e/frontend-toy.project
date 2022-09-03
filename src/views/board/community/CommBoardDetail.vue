@@ -1,36 +1,30 @@
 <template>	
 	<div>
-		<BaseBoardDetail :boardInfo="boardInfo"/>
+		<BaseBoardDetail :boardInfo="dataObj.boardInfo"/>
 	</div>
 </template>
 
-<script>
+<script setup>
+	import { useRoute, useRouter } from 'vue-router';
+	import { ref } from 'vue';
 	import axios from 'axios';
-	import BaseBoardDetail from '@/components/board/BaseBoardDetail';
+	import BaseBoardDetail from '@/components/board/BaseBoardDetail.vue';
 
-	export default {
-		name : 'CommBoardDetail',
-		components : {
-			BaseBoardDetail,
-		},
-		data() {
-			return {
-				boardInfo : new Object(),
-			};
-		},
-		created() {
-			const boardSeq = this.$route.params.boardSeq;
-			
-			axios.get('/boards/comm/list/'.concat(boardSeq))
-				.then(res=> {
-					const data = res.data;
+	const route = useRoute();
+	const router = useRouter();
+	const boardSeq = route.params.boardSeq;
+	const dataObj = ref({
+		boardInfo : new Object(),
+	});
+	
+	axios.get('/boards/comm/list/'.concat(boardSeq))
+		.then(res=> {
+			const data = res.data;
 
-					this.$data.boardInfo = data;
-				})
-				.catch(error=> {
-					alert(error.message);
-					this.$router.go(-1);
-				});
-		},
-	}
+			dataObj.value.boardInfo = data;
+		})
+		.catch(error=> {
+			alert(error.message);
+			router.go(-1);
+		});
 </script>

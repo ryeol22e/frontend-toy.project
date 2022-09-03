@@ -18,18 +18,18 @@
 		<h1 class="h3 mb-3 fw-normal">Please sign in</h1>
 
 		<div class="form-floating">
-			<input type="email" class="form-control" id="floatingInput" v-model="loginId">
+			<input type="email" class="form-control" id="floatingInput" v-model="dataObj.loginId">
 			<label for="floatingInput">Email address</label>
 		</div>
 		<br>
 		<div class="form-floating">
-			<input type="password" class="form-control" id="floatingPassword" v-model="password" @keypress.enter="goLogin">
+			<input type="password" class="form-control" id="floatingPassword" v-model="dataObj.password" @keypress.enter="goLogin">
 			<label for="floatingPassword">Password</label>
 		</div>
 
 		<div class="checkbox mb-3">
 			<label>
-				<input type="checkbox" value="remember-me" v-model="rememberMe"> Remember me
+				<input type="checkbox" value="remember-me" v-model="dataObj.rememberMe"> Remember me
 			</label>
 		</div>
 		<button class="w-100 btn btn-lg btn-primary" type="button" @click="goLogin">Sign in</button>
@@ -37,45 +37,43 @@
 	</main>
 </template>
 
-<script>
+<script setup>
+	import { ref } from 'vue';
 	import axios from 'axios';
-	import UtilsCookie from '../../assets/js/common/UtilsCookie';
+	import { useRouter } from 'vue-router';
+	import { useStoreUser } from '@/store/useStoreUser';
+	import UtilsCookie from '@/assets/common/UtilsCookie';
 
-	export default {
-		name : 'Login',
-		data() {
-			return {
-				loginId : new UtilsCookie().getCookie('loginId'),
-				password : '',
-				rememberMe : new UtilsCookie().getCookie('loginId')!=='' ? true : false,
-			};
-		},
-		created() {},
-		methods : {
-			goLogin() {
-				axios.post('/member/login', this.$data)
-					.then(res=> {
-						const token = res.data || '';
+	const router = useRouter();
+	const store = useStoreUser();
+	const dataObj = ref({
+		loginId : new UtilsCookie().getCookie('loginId'),
+		password : '',
+		rememberMe : new UtilsCookie().getCookie('loginId')!=='' ? true : false,
+	});
+	const goLogin = ()=> {
+		axios
+			.post('/member/login', dataObj.value)
+			.then(res=> {
+				const token = res.data || '';
 
-						if(token!=='') {
-							new UtilsCookie().setCookie('token', token);
+				if(token!=='') {
+					new UtilsCookie().setCookie('token', token);
 
-							if(this.$data.rememberMe) {
-								new UtilsCookie().setCookie('loginId', this.$data.loginId);
-							}
-							
-							location.href = '/';
-							// this.$router.push('/');
-						}
-					})
-					.catch((error)=> {
-						alert(error.message);
-					});
-			}
-		}
+					if(dataObj.value.rememberMe) {
+						new UtilsCookie().setCookie('loginId', dataObj.value.loginId);
+					}
+					
+					store.setLogin(true);
+					router.push('/');
+				}
+			})
+			.catch((error)=> {
+				alert(error.message);
+			});
 	}
 </script>
 
 <style>
-	@import url('../../assets/css/form.css');
+	@import url('@/assets/css/form.css');
 </style>

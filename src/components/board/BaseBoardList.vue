@@ -11,20 +11,21 @@
 	<button type="button" class="btn btn-primary" @click="clickRegist" style="float:right;">작성하기</button>
 </template>
 
-<script>
-	export default {
-		name : 'BaseBoardList',
-		props : ['boardList', 'detailName'],
-		created() {},
-		methods : {
-			clickRegist() {
-				let inType = String(this.$route.path);
-				
-				inType = inType.substring(inType.lastIndexOf('/')+1, inType.length);
-				this.$router.push({name : 'BoardRegist', params : {type : inType}});
-			},
-		}
-	}
+<script setup>
+	import { useRoute, useRouter } from 'vue-router';
+
+	const route = useRoute();
+	const router = useRouter();
+	const props = defineProps({
+		boardList : Array,
+		detailName : String,
+	});
+	const clickRegist = ()=> {
+		let inType = String(route.path);
+		
+		inType = inType.substring(inType.lastIndexOf('/')+1, inType.length);
+		router.push({name : 'BoardRegist', params : {type : inType}});
+	};
 </script>
 
 <style>

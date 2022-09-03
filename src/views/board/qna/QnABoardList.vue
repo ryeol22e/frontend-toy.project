@@ -2,37 +2,26 @@
 	<div>
 		<h1>Q&A</h1>
 		<br>
-		<BaseBoardList :boardList="boardList" detailName="QnABoardDetail"/>
+		<BaseBoardList :boardList="dataObj.boardList" detailName="QnABoardDetail"/>
 	</div>
 </template>
 
-<script>
+<script setup>
+	import { ref } from 'vue';
 	import BaseBoardList from '@/components/board/BaseBoardList.vue';
 	import axios from 'axios';
 
-	export default {
-		name : 'QnAList',
-		data() {
-			return {
-				boardList : new Array(),
-			}
-		},
-		components : {
-			BaseBoardList
-		},
-		created() {
-			axios
-				.get('/boards/qna/list')
-					.then(res=> {
-						const data = res.data;
-						this.$data.boardList = data;
-					})
-					.catch(error=> {
-						alert(error.message);
-					});
-		},
-		methods : {
-			
-		}
-	};
+	const dataObj = ref({
+		boardList : new Array(),
+	});
+	
+	axios
+		.get('/boards/qna/list')
+		.then(res=> {
+			const data = res.data;
+			dataObj.value.boardList = data;
+		})
+		.catch(error=> {
+			alert(error.message);
+		});
 </script>

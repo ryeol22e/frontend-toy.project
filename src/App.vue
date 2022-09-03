@@ -1,29 +1,9 @@
 <template>
-	<Header :isLogin="isLogin"/>
+	<Header></Header>
 	<router-view class="container"/>
 </template>
 
-<script>
-	import Header from './components/common/Header.vue';
-	import UtilsCookie from './assets/js/common/UtilsCookie';
+<script setup>
+	import Header from '@/components/common/Header.vue';
 
-	export default {
-		name: 'App',
-		components : {
-			Header,
-		},
-		data() {
-			return {
-				isLogin : false,
-			};
-		},
-		created() {
-			const token = new UtilsCookie().getCookie('token');
-
-			if(token!=='') {
-				this.$data.isLogin = true;
-			}
-		},
-		
-	};
 </script>

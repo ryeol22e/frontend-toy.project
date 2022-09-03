@@ -28,23 +28,12 @@
 	<div>
 		<a href="https://www.a-rt.com/">
 			<video id="video" preload autoplay loop muted>
-				<source src="@/assets/images/V24563969.mp4" type="video/mp4">
+				<source src="" type="video/mp4">
 			</video>
 		</a>
 	</div>
 </template>
 
-<script>
-	export default {
-		name : 'Main',
-		created() {
-			console.log('toy project main.');
-		},
-		mounted() {
-			const video = document.getElementById('video');
-		},
-		updated() {
-			
-		}
-	};
+<script setup>
+	
 </script>

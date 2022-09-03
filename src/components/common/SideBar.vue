@@ -6,7 +6,7 @@
 		</div>
 		<div class="offcanvas-body">
 			<ul>
-				<li v-for="(corner, index) in cornerList" :key="index" v-if="cornerList.length>0">
+				<li v-for="(corner, index) in barData.cornerList" :key="index" v-if="barData.cornerList.length>0">
 					<h3 v-if="corner.cornerDepth==='1'">{{corner.cornerName}}</h3>
 					<a href="javascript:void(0);" v-else-if="corner.cornerDepth!=='1'">{{corner.cornerName}}</a>
 				</li>
@@ -16,38 +16,40 @@
 </template>
 
 <script>
+	import { ref } from 'vue';
 	import axios from 'axios'
 
 	export default {
 		name : 'SideBar',
 		props : ['title', 'isMyPage'],
-		data() {
-			return {
+		setup(props) {
+			const barData = ref({
 				cornerList : new Array(),
-			};
-		},
-		created() {},
-		async updated() {
-			const isMyPage = this.isMyPage;
-			const cornerTypeCode = '10000';
-			const param = {
-				cornerTypeCode : cornerTypeCode,
-				useYn : 'Y',
-				dispYn : 'Y',
-			};
+			});
+			const updated = async ()=> {
+				const isMyPage = props.isMyPage;
+				const cornerTypeCode = '10000';
+				const param = {
+					cornerTypeCode : cornerTypeCode,
+					useYn : 'Y',
+					dispYn : 'Y',
+				};
 
-			if(isMyPage) {
-				await axios.get('/display/corner', {
-					params : param
-				})
-				.then(res=> {
-					this.$data.cornerList = res.data;
-					this.$emit('changeBoolMyPAge', false);
-				})
-				.catch(error=> {
-					alert(error.message);
-				});
+				if(isMyPage) {
+					await axios.get('/display/corner', {
+						params : param
+					})
+					.then(res=> {
+						barData.cornerList = res.data;
+						this.$emit('changeBoolMyPAge', false);
+					})
+					.catch(error=> {
+						alert(error.message);
+					});
+				}
 			}
+
+			return {barData, updated};
 		}
 	}
 </script>

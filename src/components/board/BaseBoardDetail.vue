@@ -1,13 +1,12 @@
 <template>
-	<h3>{{boardInfo.title}}</h3>
+	<h3>{{props.boardInfo.title}}</h3>
 	<br>
-	<p>{{boardInfo.content}}</p>
+	<p>{{props.boardInfo.content}}</p>
 </template>
 
-<script>
-	export default {
-		name : 'BaseBoardDetail',
-		props : ['boardInfo'],
-		created() {},
-	};
+<script setup>
+	const props = defineProps({
+		boardInfo : Object,
+	});
+	
 </script>

@@ -1,28 +1,21 @@
 <template>
 	<keep-alive>
-		<NotFound :is="errorType==='404'"/>
+		<NotFound :is="props.errorType==='404'"/>
 	</keep-alive>
 	<keep-alive>
-		<ServerError :is="errorType==='500'"/>
+		<ServerError :is="props.errorType==='500'"/>
 	</keep-alive>
 	<keep-alive>
-		<CheckSite :is="errorType==='9999'"/>
+		<CheckSite :is="props.errorType==='9999'"/>
 	</keep-alive>
 </template>
 
-<script>
+<script setup>
 	import NotFound from "@/components/error/NotFound.vue";
 	import ServerError from "@/components/error/ServerError.vue";
 	import CheckSite from "@/components/error/CheckSite.vue";
 
-	export default {
-		name : 'Error',
-		props : ['errorType'],
-		components : {
-			NotFound,
-			ServerError,
-			CheckSite,
-		}
-		
-	}
+	const props = defineProps({
+		errorType : String,
+	});
 </script>

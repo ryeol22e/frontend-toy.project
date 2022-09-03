@@ -1,11 +1,10 @@
-import { createRouter, createWebHistory } from 'vue-router';
-import { nextTick } from 'vue';
-import axios from 'axios';
-import UtilsCookie from '../assets/js/common/UtilsCookie';
-import authenticationUrl from './common/authenticationUrl';
-import store from '../store/index';
-import main from './main/main';
-import board from './board/board';
+import { createRouter, createWebHistory } from "vue-router";
+import { nextTick } from "vue";
+import axios from "axios";
+import UtilsCookie from '../assets/common/UtilsCookie';
+import authenticationUrl from '../assets/common/authenticationUrl';
+import main from './main';
+import board from './board';
 
 const routes = [
 	{
@@ -23,13 +22,21 @@ const routes = [
 			title : 'Error :('
 		}
 	},
+	{
+		path : '/setup/test',
+		name : 'SetupTest',
+		component : ()=> import('@/views/common/SetupTestView.vue'),
+		props : true,
+		meta :  {
+			title : 'setup test'
+		}
+	},
 	...main,
 	...board,
-]
-
+];
 const router = createRouter({
-	history: createWebHistory(process.env.BASE_URL),
-	routes
+	history : createWebHistory(import.meta.env.BASE_URL),
+	routes,
 });
 
 router.beforeEach((to, from, next)=> {
@@ -43,10 +50,6 @@ router.beforeEach((to, from, next)=> {
 	}
 	
 	if(!authFlag) {
-		if(to.path==='/login' && token!=='') {
-			router.push({name : 'Main'});
-		}
-
 		next();
 	} else {
 		axios
@@ -56,17 +59,14 @@ router.beforeEach((to, from, next)=> {
 			})
 			.catch(error=> {
 				new UtilsCookie().deleteCookie('token');
-				router.push({name : 'Login'});
+				next('/login');
 			});
 	}
 });
-
-router.afterEach((to, from)=> {
-	let title = to.meta.title || 'toy project';
-
-	nextTick(()=>{
-		document.title = title;
+router.afterEach(to=> {
+	nextTick(()=> {
+		document.title = 'toy.project :)';
 	});
-});
+})
 
-export default router
+export default router;

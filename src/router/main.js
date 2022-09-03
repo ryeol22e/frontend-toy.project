@@ -22,5 +22,16 @@ export default [
 		meta : {
 			title : '회원가입',
 		}
+	},
+	{
+		path : '/sub',
+		component : ()=> import('@/views/main/Sub.vue'),
+		children : [
+			{
+				path : ':id',
+				name : 'SubItem',
+				component : ()=> import('@/views/main/SubView.vue')
+			}
+		]
 	}
 ];

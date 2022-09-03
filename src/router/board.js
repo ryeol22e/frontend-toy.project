@@ -10,7 +10,7 @@ export default [
 	{
 		path : '/boards/regist/:type',
 		name : 'BoardRegist',
-		component : ()=> import('@/views/board/BoardRegist'),
+		component : ()=> import('@/views/board/BoardRegist.vue'),
 		meta : {
 			title : 'Q&A 등록',
 		}
@@ -18,17 +18,17 @@ export default [
 	{
 		path : '/boards/community',
 		name : 'CommunityBoardList',
-		component : ()=> import('@/views/board/community/CommBoardList'),
+		component : ()=> import('@/views/board/community/CommBoardList.vue'),
 	},
 	{
 		path : '/boards/community/:boardSeq',
 		name : 'CommBoardDetail',
-		component : ()=> import('@/views/board/community/CommBoardDetail'),
+		component : ()=> import('@/views/board/community/CommBoardDetail.vue'),
 	},
 	{
 		path : '/boards/qna',
 		name : 'QnABoardList',
-		component : ()=> import('@/views/board/qna/QnABoardList'),
+		component : ()=> import('@/views/board/qna/QnABoardList.vue'),
 		meta : {
 			title : 'Q&A',
 		},
@@ -45,7 +45,7 @@ export default [
 	{
 		path : '/boards/qna/:boardSeq',
 		name : 'QnABoardDetail',
-		component : ()=> import('@/views/board/qna/QnABoardDetail'),
+		component : ()=> import('@/views/board/qna/QnABoardDetail.vue'),
 		meta : {
 			title : 'Q&A - '
 		}
