@@ -1,3 +1,4 @@
+import qs from 'qs';
 import axios from 'axios';
 import router from '@/router';
 
@@ -9,17 +10,17 @@ export default ()=> {
 		return qs.stringify(params);
 	};
 
-	axios.interceptors.response.use(res=> {
-		return res;
-	}, error=>{
-		const regex = /40[0-9]/gi;
-		const status = error.response.status;
+// 	axios.interceptors.response.use(res=> {
+// 		return res;
+// 	}, error=>{
+// 		const regex = /40[0-9]/gi;
+// 		const status = error.response.status;
 		
-		if(regex.test(status)) {
-			error.message = 'please login.';
-			router.push('/login');
-		}
+// 		if(regex.test(status)) {
+// 			error.message = 'please login.';
+// 			router.push('/login');
+// 		}
 
-		return Promise.reject(error);
-  });
+// 		return Promise.reject(error);
+//   });
 };

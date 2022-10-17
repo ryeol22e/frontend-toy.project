@@ -28,8 +28,10 @@
 
 <script setup>
 	import { ref } from 'vue';
+	import {useRouter} from 'vue-router';
 	import axios from 'axios';
 
+	const router = useRouter();
 	const dataObj = ref({
 		loginId : '',
 		password : '',
@@ -62,7 +64,7 @@
 
 					if(result) {
 						alert('가입완료하였습니다.');
-						this.$router.push({name : 'Main'});
+						router.push({name : 'Main'});
 					}
 				})
 				.catch(error=> {

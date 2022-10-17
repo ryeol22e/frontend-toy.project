@@ -3,6 +3,7 @@ import { nextTick } from "vue";
 import axios from "axios";
 import UtilsCookie from '../assets/common/UtilsCookie';
 import authenticationUrl from '../assets/common/authenticationUrl';
+import { useStoreUser } from "../store/useStoreUser";
 import main from './main';
 import board from './board';
 
@@ -41,24 +42,32 @@ const router = createRouter({
 
 router.beforeEach((to, from, next)=> {
 	const token = new UtilsCookie().getCookie('token');
+	const userInfo = JSON.parse(sessionStorage.getItem('userInfo'));
 	const authFlag = authenticationUrl(to.path);
 	
 	if(token!=='') {
 		axios.defaults.headers.common['Authorization'] = 'Bearer '.concat(token);
+		axios.defaults.headers.common['MemberId'] = userInfo.loginId;
 	} else {
 		delete axios.defaults.headers.common['Authorization'];
+		delete axios.defaults.headers.common['MemberId'];
 	}
 	
 	if(!authFlag) {
 		next();
 	} else {
 		axios
-			.get('/common/auth/check')
+			.get('/auth/check')
 			.then(res=> {
 				next();
 			})
 			.catch(error=> {
+				const useUser = useStoreUser();
+
+				useUser.setIsLogin(false);
 				new UtilsCookie().deleteCookie('token');
+				sessionStorage.removeItem('userInfo');
+				
 				next('/login');
 			});
 	}

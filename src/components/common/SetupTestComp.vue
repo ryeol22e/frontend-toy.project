@@ -1,7 +1,7 @@
 <template>
 	<h2>component</h2>
 	<p>{{props.data.str}}</p>
-	<button @click="sendParent">emit button</button>
+	<button class="btn btn-primary" @click="sendParent">emit button</button>
 </template>
 
 <script setup>

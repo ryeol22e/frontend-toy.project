@@ -38,39 +38,26 @@
 </template>
 
 <script setup>
-	import { ref } from 'vue';
-	import axios from 'axios';
+	import { reactive } from 'vue';
 	import { useRouter } from 'vue-router';
 	import { useStoreUser } from '@/store/useStoreUser';
 	import UtilsCookie from '@/assets/common/UtilsCookie';
 
 	const router = useRouter();
 	const store = useStoreUser();
-	const dataObj = ref({
-		loginId : new UtilsCookie().getCookie('loginId'),
+	const loginId = localStorage.getItem('loginId');
+	const dataObj = reactive({
+		loginId : loginId!==null ? loginId : '',
 		password : '',
-		rememberMe : new UtilsCookie().getCookie('loginId')!=='' ? true : false,
+		rememberMe : loginId!==null ? true : false,
 	});
-	const goLogin = ()=> {
-		axios
-			.post('/member/login', dataObj.value)
-			.then(res=> {
-				const token = res.data || '';
-
-				if(token!=='') {
-					new UtilsCookie().setCookie('token', token);
-
-					if(dataObj.value.rememberMe) {
-						new UtilsCookie().setCookie('loginId', dataObj.value.loginId);
-					}
-					
-					store.setLogin(true);
-					router.push('/');
-				}
-			})
-			.catch((error)=> {
-				alert(error.message);
-			});
+	const goLogin = async ()=> {
+		store.setLogin(dataObj);
+		const isLogin = await store.getIsLogin;
+		
+		if(isLogin) {
+			router.push('/');
+		}
 	}
 </script>
 

@@ -6,7 +6,7 @@
 			<router-link to="/" class="navbar-brand">TOY</router-link>
 		
 			<div class="collapse navbar-collapse" id="navbarSupportedContent">
-				<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+				<ul class="navbar-nav me-auto mb-2 mb-lg-0" v-if="getHeaders.length>0">
 					<li class="nav-item" v-for="(header, index) in getHeaders" :key="index" :class="header.active ? 'active' : ''">
 						<router-link class="nav-link" :to="{path : header.path}" @click="changeStyle(header)">{{header.name}}</router-link>
 					</li>
@@ -28,7 +28,7 @@
 </template>
 
 <script setup>
-	import { ref, onMounted, computed } from 'vue';
+	import { reactive, onMounted, computed } from 'vue';
 	import axios from 'axios';
 	import UtilsCookie from '@/assets/common/UtilsCookie';
 	import SideBar from '@/components/common/SideBar.vue';
@@ -43,7 +43,7 @@
 	const getHeaders = computed(()=> {
 		return storeHeader.getHeaders;
 	});
-	const headerData = ref({
+	const headerData = reactive({
 		word : '',
 		isMyPage : false,
 		modalTitle : '',
@@ -54,7 +54,8 @@
 	};
 	const logout = ()=> {
 		new UtilsCookie().deleteCookie('token');
-		storeUser.setLogin(false);
+		sessionStorage.removeItem('userInfo');
+		storeUser.setIsLogin(false);
 		router.push('/');
 	};
 	const searchWord = (e)=> {
@@ -96,7 +97,12 @@
 	}
 
 	onMounted(()=> {
-		storeHeader.setHeaders();
+		storeHeader.callHeaders();
+		const token = new UtilsCookie().getCookie('token');
+		
+		if(token!=='') {
+			storeUser.setIsLogin(true);
+		}
 	});
 </script>
 

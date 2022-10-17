@@ -25,10 +25,10 @@
 			<span class="visually-hidden">Next</span>
 		</button>
 	</div> -->
-	<div>
+	<div class="container">
 		<a href="https://www.a-rt.com/">
 			<video id="video" preload autoplay loop muted>
-				<source src="" type="video/mp4">
+				<source src="@/assets/images/1665636867671.mp4" type="video/mp4">
 			</video>
 		</a>
 	</div>
@@ -37,3 +37,11 @@
 <script setup>
 	
 </script>
+
+<style scoped>
+	video {
+		object-fit: initial;
+		width: 100%;
+		height: 830px;
+	}
+</style>

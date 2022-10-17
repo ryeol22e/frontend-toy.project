@@ -1,6 +1,7 @@
 <template>
 	<Header></Header>
-	<router-view class="container"/>
+	<!-- <router-view class="container"/> -->
+	<router-view/>
 </template>
 
 <script setup>
