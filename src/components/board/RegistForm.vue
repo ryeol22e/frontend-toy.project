@@ -21,15 +21,15 @@
 <script setup>
 	import { ref } from 'vue';
 	import { useRoute } from 'vue-router';
-	import UtilsCookie from '@/assets/common/UtilsCookie';
 
+	const userInfo = JSON.parse(sessionStorage.getItem('userInfo'));
 	const route = useRoute();
 	const emit = defineEmits(['boardRegist']);
 	const dataObj = ref({
 		title : '',
 		content : '',
 		image : null,
-		writer : new UtilsCookie().getCookie('loginId'),
+		writer : userInfo.loginId,
 		type : route.params.type,
 	});
 	const regist = ()=> {
