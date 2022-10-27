@@ -12,8 +12,8 @@ export const useStoreUser = defineStore('useStoreUser', {
 		getIsLogin : state=> state.isLogin,
 	},
 	actions : {
-		setLogin(data) {
-			this.isLogin = axios.post('/member/login', data)
+		async setLogin(data) {
+			this.isLogin = await axios.post('/member/login', data)
 				.then(res=> {
 					let flag = false;
 					const userInfo = res.data || '';
@@ -34,6 +34,7 @@ export const useStoreUser = defineStore('useStoreUser', {
 				.catch((error)=> {
 					alert('로그인 실패하였습니다.');
 					console.error(error);
+					return false;
 				});
 		},
 		setIsLogin(flag) {

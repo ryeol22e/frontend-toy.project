@@ -52,8 +52,8 @@
 		rememberMe : loginId!==null ? true : false,
 	});
 	const goLogin = async ()=> {
-		store.setLogin(dataObj);
-		const isLogin = await store.getIsLogin;
+		await store.setLogin(dataObj);
+		const isLogin = store.getIsLogin;
 		
 		if(isLogin) {
 			router.push('/');

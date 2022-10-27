@@ -1,6 +1,7 @@
 <template>
-	<SideBar :isMyPage="isMyPage" @changeBoolMyPage="changeBoolMyPage" title="mypage" v-if="storeUser.getIsLogin"/>
+	<SideBar v-if="isLogin" :isMyPage="isLogin" title="mypage"/>
 	<Modal :title="headerData.modalTitle" :content="headerData.modalContent"/>
+
 	<nav class="navbar navbar-expand-lg navbar-light bg-light">
 		<div class="container-fluid">
 			<router-link to="/" class="navbar-brand">TOY</router-link>
@@ -12,10 +13,10 @@
 					</li>
 				</ul>
 				<div class="d-flex">
-					<router-link class="navbar-text" to="/login" v-if="!storeUser.getIsLogin" style="text-decoration: none;">login</router-link>
+					<router-link class="navbar-text" to="/login" v-if="!isLogin" style="text-decoration: none;">login</router-link>
 					<a href="#sideBar" class="navbar-text" role="button" data-bs-toggle="offcanvas" aria-controls="sideBar" v-else @click="isMyPage=!isMyPage" style="text-decoration: none;">mypage</a>
 					&nbsp;&nbsp;
-					<router-link class="navbar-text" to="/join" v-if="!storeUser.getIsLogin" style="text-decoration: none;">join</router-link>
+					<router-link class="navbar-text" to="/join" v-if="!isLogin" style="text-decoration: none;">join</router-link>
 					<a href="javascript:void(0);" class="navbar-text" v-else @click="logout" style="text-decoration: none;">logout</a>
 					&nbsp;&nbsp;
 					<input class="form-control me-2 dropwon-toggle" type="search" placeholder="Search" aria-label="Search" v-model="headerData.word" @keypress.enter="searchWord">
@@ -28,7 +29,7 @@
 </template>
 
 <script setup>
-	import { reactive, onMounted, computed } from 'vue';
+	import {ref, reactive, onMounted, computed } from 'vue';
 	import axios from 'axios';
 	import UtilsCookie from '@/assets/common/UtilsCookie';
 	import SideBar from '@/components/common/SideBar.vue';
@@ -40,12 +41,10 @@
 	const router = useRouter();
 	const storeUser = useStoreUser();
 	const storeHeader = useStoreHeader();
-	const getHeaders = computed(()=> {
-		return storeHeader.getHeaders;
-	});
+	const getHeaders = computed(()=> storeHeader.getHeaders);
+	const isLogin = computed(()=> storeUser.getIsLogin);
 	const headerData = reactive({
 		word : '',
-		isMyPage : false,
 		modalTitle : '',
 		modalContent : '',
 	});
@@ -92,9 +91,6 @@
 			return false;
 		}
 	};
-	const changeBoolMyPage= (data)=> {
-		headerData.value.isMyPage = Boolean(data);
-	}
 
 	onMounted(()=> {
 		storeHeader.callHeaders();

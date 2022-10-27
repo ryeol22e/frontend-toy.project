@@ -1,12 +1,12 @@
 <template>
 	<div class="offcanvas offcanvas-start" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="sideBar" aria-labelledby="sideBarLabel">
 		<div class="offcanvas-header">
-			<h5 class="offcanvas-title" id="sideBarLabel">Mypage</h5>
+			<h5 class="offcanvas-title" id="sideBarLabel">{{title}}</h5>
 			<button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
 		</div>
 		<div class="offcanvas-body">
 			<ul>
-				<li v-for="(corner, index) in barData.cornerList" :key="index" v-if="barData.cornerList.length>0">
+				<li v-if="cornerList.length>0" v-for="(corner, index) in cornerList" :key="index">
 					<h3 v-if="corner.cornerDepth==='1'">{{corner.cornerName}}</h3>
 					<a href="javascript:void(0);" v-else-if="corner.cornerDepth!=='1'">{{corner.cornerName}}</a>
 				</li>
@@ -16,40 +16,31 @@
 </template>
 
 <script>
-	import { ref } from 'vue';
-	import axios from 'axios'
+	import {computed, onMounted } from 'vue';
+	import { useStoreHeader } from '@/store/useStoreHeader';
 
 	export default {
 		name : 'SideBar',
 		props : ['title', 'isMyPage'],
 		setup(props) {
-			const barData = ref({
-				cornerList : new Array(),
-			});
-			const updated = async ()=> {
+			const useHeader = useStoreHeader();
+			const cornerList = computed(()=> useHeader.getMypageList);
+
+			onMounted(()=> {
 				const isMyPage = props.isMyPage;
-				const cornerTypeCode = '10000';
-				const param = {
-					cornerTypeCode : cornerTypeCode,
-					useYn : 'Y',
-					dispYn : 'Y',
-				};
 
 				if(isMyPage) {
-					await axios.get('/display/corner', {
-						params : param
-					})
-					.then(res=> {
-						barData.cornerList = res.data;
-						this.$emit('changeBoolMyPAge', false);
-					})
-					.catch(error=> {
-						alert(error.message);
-					});
-				}
-			}
+					const param = {
+						cornerTypeCode : '10000',
+						useYn : 'Y',
+						dispYn : 'Y',
+					};
 
-			return {barData, updated};
+					useHeader.setMypageList(param);
+				}
+			});
+
+			return {cornerList};
 		}
 	}
 </script>
