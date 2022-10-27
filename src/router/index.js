@@ -74,7 +74,7 @@ router.beforeEach((to, from, next)=> {
 });
 router.afterEach(to=> {
 	nextTick(()=> {
-		document.title = 'toy.project :)';
+		document.title = 'toy';
 	});
 })
 
