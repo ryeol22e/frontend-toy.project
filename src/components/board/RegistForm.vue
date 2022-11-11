@@ -19,13 +19,13 @@
 </template>
 
 <script setup>
-	import { ref } from 'vue';
+	import { reactive } from 'vue';
 	import { useRoute } from 'vue-router';
 
 	const userInfo = JSON.parse(sessionStorage.getItem('userInfo'));
 	const route = useRoute();
 	const emit = defineEmits(['boardRegist']);
-	const dataObj = ref({
+	const dataObj = reactive({
 		title : '',
 		content : '',
 		image : null,
@@ -33,10 +33,10 @@
 		type : route.params.type,
 	});
 	const regist = ()=> {
-		emit('boardRegist', dataObj.value);
+		emit('boardRegist', dataObj);
 	};
 	const uploadImage = (e)=> {
-		dataObj.value.image = e.target.files[0];
+		dataObj.image = e.target.files[0];
 	}
 </script>
 

@@ -45,7 +45,7 @@ router.beforeEach((to, from, next)=> {
 	const userInfo = JSON.parse(sessionStorage.getItem('userInfo'));
 	const authFlag = authenticationUrl(to.path);
 	
-	if(token!=='') {
+	if(token!=='' && userInfo!==null) {
 		axios.defaults.headers.common['Authorization'] = 'Bearer '.concat(token);
 		axios.defaults.headers.common['MemberId'] = userInfo.loginId;
 	} else {

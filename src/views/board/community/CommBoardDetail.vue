@@ -1,30 +1,28 @@
 <template>	
 	<div>
-		<BaseBoardDetail :boardInfo="dataObj.boardInfo"/>
+		<BaseBoardDetail :boardInfo="boardInfo" :memberInfo="memberInfo" @delBoard="delBoard"/>
 	</div>
 </template>
 
 <script setup>
-	import { useRoute, useRouter } from 'vue-router';
-	import { ref } from 'vue';
-	import axios from 'axios';
+	import { useRoute } from 'vue-router';
+	import { onMounted, computed } from 'vue';
+	import {useStoreBoard} from '@/store/useStoreBoard.js';
 	import BaseBoardDetail from '@/components/board/BaseBoardDetail.vue';
 
 	const route = useRoute();
-	const router = useRouter();
+	const useBoard = useStoreBoard();
 	const boardSeq = route.params.boardSeq;
-	const dataObj = ref({
-		boardInfo : new Object(),
+	const boardInfo = computed(()=> useBoard.getBoardDetail);
+	const memberInfo = computed(()=> useBoard.getBoardDetail.memberInfo);
+	const delBoard = ()=> {
+		const url = `/boards/comm/del/${boardSeq}`;
+		useBoard.delBoardData(url);
+	};
+	
+	onMounted(()=> {
+		const url = `/boards/comm/list/${boardSeq}`;
+		useBoard.setBoardDetail(url);
 	});
 	
-	axios.get('/boards/comm/list/'.concat(boardSeq))
-		.then(res=> {
-			const data = res.data;
-
-			dataObj.value.boardInfo = data;
-		})
-		.catch(error=> {
-			alert(error.message);
-			router.go(-1);
-		});
 </script>

@@ -3,11 +3,10 @@
 </template>
 
 <script setup>
-	import { useRouter } from 'vue-router';
-	import axios from 'axios';
+	import {useStoreBoard} from '@/store/useStoreBoard.js';
 	import RegistForm from '@/components/board/RegistForm.vue';
 
-	const router = useRouter();
+	const useBoard = useStoreBoard();
 	const validate = (data)=> {
 		if(data.title==='') {
 			alert('제목을 입력해주세요.');
@@ -21,26 +20,15 @@
 		return true;
 	};
 	const boardRegist = (data)=> {
+		const type = data.type;
+		
 		if(validate(data)) {
-			const type = data.type;
-			const formData = changeToFormData(data);
-
-			axios.post('/boards/regist/'.concat(type), formData, {
-					headers : {
-						'Content-Type' : 'multipart/form-data',
-					}
-				})
-				.then(res=> {
-					const result = res.data;
-
-					if(result) {
-						alert('등록완료되었습니다.');
-						router.push({path : '/boards/'.concat(type)});
-					}
-				})
-				.catch(error=> {
-					alert(error.message);
-				});
+			if(type==='community') {
+				useBoard.registImageBoard(type, changeToFormData(data));
+			} else {
+				useBoard.registGeneralBoard(type, data);
+			}
+			
 		}
 	};
 	const changeToFormData = (data)=> {
