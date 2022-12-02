@@ -5,7 +5,7 @@
 
 <script setup>
 	import { useRouter } from 'vue-router';
-	import SubHeader from '@/components/SubHeader.vue';
+	import SubHeader from '@/components/common/SubHeader.vue';
 
 	const router = useRouter();
 	const subHeaderHandler = (data)=> {
