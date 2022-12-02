@@ -27,19 +27,19 @@
 </template>
 
 <script setup>
-	import { ref } from 'vue';
+	import { reactive } from 'vue';
 	import {useRouter} from 'vue-router';
 	import axios from 'axios';
 
 	const router = useRouter();
-	const dataObj = ref({
+	const dataObj = reactive({
 		loginId : '',
 		password : '',
 		userName : '',
 		userAddr : '',
 	});
 	const validate = ()=> {
-		const data = dataObj.value;
+		const data = dataObj;
 
 		if(data.userName==='') {
 			alert('이름은 필수입력입니다.');
@@ -58,7 +58,7 @@
 	};
 	const join = ()=> {
 		if(validate()) {
-			axios.post('/member/join', dataObj.value)
+			axios.post('/member/join', dataObj)
 				.then(res=> {
 					const result = res.data || false;
 
@@ -74,6 +74,6 @@
 	};
 </script>
 
-<style>
+<style scoped>
 	@import url('../../assets/css/form.css');
 </style>

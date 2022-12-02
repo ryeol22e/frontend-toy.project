@@ -19,8 +19,8 @@
 					<RouterLink class="navbar-text" to="/join" v-if="!isLogin" style="text-decoration: none;">join</RouterLink>
 					<a href="javascript:void(0);" class="navbar-text" v-else @click="logout" style="text-decoration: none;">logout</a>
 					&nbsp;&nbsp;
-					<input class="form-control me-2 dropwon-toggle" type="search" placeholder="Search" aria-label="Search" v-model="headerData.word" @keypress.enter="searchWord">
-					<button class="btn btn-outline-success" type="button" @click="searchWord">Search</button>
+					<input v-model="headerData.word" @keypress.enter="searchWord" class="form-control me-2 dropwon-toggle" type="search" placeholder="Search" aria-label="Search">
+					<button @click="searchWord" class="btn btn-outline-success" type="button">Search</button>
 				</div>
 			</div>
 		</div>
@@ -29,7 +29,7 @@
 </template>
 
 <script setup>
-	import {ref, reactive, onMounted, computed } from 'vue';
+	import { reactive, onMounted, computed } from 'vue';
 	import axios from 'axios';
 	import {useUtils} from '@/composables/useUtils.js';
 	import SideBar from '@/components/common/SideBar.vue';
@@ -59,7 +59,7 @@
 		router.push('/');
 	};
 	const searchWord = (e)=> {
-		const word = String(headerData.value.word);
+		const word = String(headerData.word);
 		
 		if(word.replace(/[\s]/gi, '').length>0) {
 			axios.post('/search/'.concat(word), { 
@@ -80,8 +80,8 @@
 		} else {
 			const el = document.createElement('button');
 			const event = new MouseEvent('click');
-			headerData.value.modalTitle = 'no search word.';
-			headerData.value.modalContent = 'please write search word.';
+			headerData.modalTitle = 'no search word.';
+			headerData.modalContent = 'please write search word.';
 
 			document.getElementById('app').appendChild(el);
 			el.setAttribute('data-bs-toggle', 'modal');
@@ -104,6 +104,8 @@
 </script>
 
 <style scoped>
+	@import url('../../assets/css/navbar.css');
+	
 	nav-link:visited {
 
 	}

@@ -25,8 +25,8 @@
 			<span class="visually-hidden">Next</span>
 		</button>
 	</div> -->
-	<div class="container">
-		<a href="https://www.a-rt.com/">
+	<div>
+		<a href="https://www.a-rt.com/" title="go!">
 			<video id="video" preload autoplay loop muted>
 				<source src="@/assets/images/1665636867671.mp4" type="video/mp4">
 			</video>
@@ -42,6 +42,6 @@
 	video {
 		object-fit: initial;
 		width: 100%;
-		height: 830px;
+		height: 820px;
 	}
 </style>
