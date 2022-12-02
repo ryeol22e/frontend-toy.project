@@ -8,9 +8,12 @@
 		
 			<div class="collapse navbar-collapse" id="navbarSupportedContent">
 				<ul class="navbar-nav me-auto mb-2 mb-lg-0" v-if="getHeaders.length>0">
-					<li class="nav-item" v-for="(header, index) in getHeaders" :key="index" :class="header.active ? 'active' : ''">
-						<RouterLink class="nav-link" :to="{path : header.path}" @click="changeStyle(header)">{{header.name}}</RouterLink>
+					<li v-for="(header, index) in getHeaders" :key="index" :class="`nav-item${header.active ? ' active' : ''}`">
+						<RouterLink :to="{path : header.path}" @click="changeStyle(header)" class="nav-link">{{header.name}}</RouterLink>
 					</li>
+					<!-- <li :class="`nav-item`">
+						<RouterLink @click="changeStyle({id : 9999, active : null})" to="/setup/test" class="nav-link">TESTPAGE</RouterLink>
+					</li> -->
 				</ul>
 				<div class="d-flex">
 					<RouterLink v-if="!isLogin" class="navbar-text" to="/login">login</RouterLink>

@@ -60,12 +60,10 @@ router.beforeEach((to, from, next)=> {
 		next();
 	} else {
 		axios.get('/auth/check')
-		.then(res=> {
-			next();
-		})
+		.then(res=> next())
 		.catch(error=> {
 			const useUser = useStoreUser();
-
+			
 			useUser.setIsLogin(false);
 			useCookie.deleteCookie('token');
 			sessionStorage.removeItem('userInfo');
