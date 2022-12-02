@@ -39,7 +39,7 @@
 	};
 
 	onMounted(()=> {
-		axios.get('/common/future1')
+		axios.get('/test/future1')
 			.then(res=> {
 				data.future1 = res.data;
 			})
@@ -47,7 +47,7 @@
 				alert(error);
 			});
 		
-		axios.get('/common/future2')
+		axios.get('/test/future2')
 			.then(res=> {
 				data.future2 = res.data;
 			})

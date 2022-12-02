@@ -38,28 +38,28 @@
 </template>
 
 <script setup>
-	import { reactive } from 'vue';
+	import { reactive, computed, watchEffect } from 'vue';
 	import { useRouter } from 'vue-router';
 	import { useStoreUser } from '@/store/useStoreUser';
-	import {useUtils} from '@/composables/useUtils.js';
 
-	const useCookie = useUtils().useCookie;
 	const router = useRouter();
 	const store = useStoreUser();
 	const loginId = localStorage.getItem('loginId');
+	const isLogin = computed(()=> store.getIsLogin);
 	const dataObj = reactive({
 		loginId : loginId!==null ? loginId : '',
 		password : '',
 		rememberMe : loginId!==null ? true : false,
 	});
-	const goLogin = async ()=> {
-		await store.setLogin(dataObj);
-		const isLogin = store.getIsLogin;
-		
-		if(isLogin) {
+	const goLogin = ()=> {
+		store.setLogin(dataObj);
+	}
+	
+	watchEffect(()=> {
+		if(isLogin.value) {
 			router.push('/');
 		}
-	}
+	});
 </script>
 
 <style>

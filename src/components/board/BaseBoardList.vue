@@ -8,10 +8,11 @@
 		<h3>게시글이 없습니다.</h3>
 	</div>
 	<br/>
-	<button type="button" class="btn btn-primary" @click="clickRegist" style="float:right;">작성하기</button>
+	<button v-if="isAdmin" type="button" class="btn btn-primary" @click="clickRegist" style="float:right;">작성하기</button>
 </template>
 
 <script setup>
+	import { ref } from 'vue';
 	import { useRoute, useRouter } from 'vue-router';
 
 	const route = useRoute();
@@ -20,6 +21,7 @@
 		boardList : Array,
 		detailName : String,
 	});
+	const isAdmin = ref(JSON.parse(sessionStorage.getItem('userInfo'))?.loginId==='jaeryeol@3top.co.kr' || false);
 	const clickRegist = ()=> {
 		let inType = String(route.path);
 		

@@ -4,11 +4,9 @@ import {useUtils} from '@/composables/useUtils.js';
 
 const useCookie = useUtils().useCookie;
 export const useStoreUser = defineStore('useStoreUser', {
-	state : ()=> {
-		return {
-			isLogin : false,
-		}
-	},
+	state : ()=> ({
+		isLogin : false,
+	}),
 	getters : {
 		getIsLogin : state=> state.isLogin,
 	},
