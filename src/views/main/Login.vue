@@ -41,8 +41,9 @@
 	import { reactive } from 'vue';
 	import { useRouter } from 'vue-router';
 	import { useStoreUser } from '@/store/useStoreUser';
-	import UtilsCookie from '@/assets/common/UtilsCookie';
+	import {useUtils} from '@/composables/useUtils.js';
 
+	const useCookie = useUtils().useCookie;
 	const router = useRouter();
 	const store = useStoreUser();
 	const loginId = localStorage.getItem('loginId');

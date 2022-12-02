@@ -1,12 +1,13 @@
 import { createRouter, createWebHistory } from "vue-router";
 import { nextTick } from "vue";
 import axios from "axios";
-import UtilsCookie from '../assets/common/UtilsCookie';
+import {useUtils} from '../composables/useUtils.js';
 import authenticationUrl from '../assets/common/authenticationUrl';
 import { useStoreUser } from "../store/useStoreUser";
 import main from './main';
 import board from './board';
 
+const useCookie = useUtils().useCookie;
 const routes = [
 	{
 		path : '/:pathMatch(.*)*',
@@ -41,7 +42,7 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next)=> {
-	const token = new UtilsCookie().getCookie('token');
+	const token = useCookie.getCookie('token');
 	const userInfo = JSON.parse(sessionStorage.getItem('userInfo'));
 	const authFlag = authenticationUrl(to.path);
 	
@@ -65,7 +66,7 @@ router.beforeEach((to, from, next)=> {
 				const useUser = useStoreUser();
 
 				useUser.setIsLogin(false);
-				new UtilsCookie().deleteCookie('token');
+				useCookie.deleteCookie('token');
 				sessionStorage.removeItem('userInfo');
 				
 				next('/login');

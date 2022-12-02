@@ -4,6 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "local": "vite --mode toy.local",
     "dev": "vite build && vite --mode development",
     "build": "vite build",
     "preview": "vite preview"

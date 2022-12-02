@@ -4,19 +4,19 @@
 
 	<nav class="navbar navbar-expand-lg navbar-light bg-light">
 		<div class="container-fluid">
-			<router-link to="/" class="navbar-brand">TOY</router-link>
+			<RouterLink to="/" class="navbar-brand">TOY</RouterLink>
 		
 			<div class="collapse navbar-collapse" id="navbarSupportedContent">
 				<ul class="navbar-nav me-auto mb-2 mb-lg-0" v-if="getHeaders.length>0">
 					<li class="nav-item" v-for="(header, index) in getHeaders" :key="index" :class="header.active ? 'active' : ''">
-						<router-link class="nav-link" :to="{path : header.path}" @click="changeStyle(header)">{{header.name}}</router-link>
+						<RouterLink class="nav-link" :to="{path : header.path}" @click="changeStyle(header)">{{header.name}}</RouterLink>
 					</li>
 				</ul>
 				<div class="d-flex">
-					<router-link class="navbar-text" to="/login" v-if="!isLogin" style="text-decoration: none;">login</router-link>
+					<RouterLink class="navbar-text" to="/login" v-if="!isLogin" style="text-decoration: none;">login</RouterLink>
 					<a href="#sideBar" class="navbar-text" role="button" data-bs-toggle="offcanvas" aria-controls="sideBar" v-else @click="isMyPage=!isMyPage" style="text-decoration: none;">mypage</a>
 					&nbsp;&nbsp;
-					<router-link class="navbar-text" to="/join" v-if="!isLogin" style="text-decoration: none;">join</router-link>
+					<RouterLink class="navbar-text" to="/join" v-if="!isLogin" style="text-decoration: none;">join</RouterLink>
 					<a href="javascript:void(0);" class="navbar-text" v-else @click="logout" style="text-decoration: none;">logout</a>
 					&nbsp;&nbsp;
 					<input class="form-control me-2 dropwon-toggle" type="search" placeholder="Search" aria-label="Search" v-model="headerData.word" @keypress.enter="searchWord">
@@ -31,7 +31,7 @@
 <script setup>
 	import {ref, reactive, onMounted, computed } from 'vue';
 	import axios from 'axios';
-	import UtilsCookie from '@/assets/common/UtilsCookie';
+	import {useUtils} from '@/composables/useUtils.js';
 	import SideBar from '@/components/common/SideBar.vue';
 	import Modal from '@/components/common/Modal.vue';
 	import { useStoreHeader } from '@/store/useStoreHeader';
@@ -39,6 +39,7 @@
 	import { useRouter } from 'vue-router';
 
 	const router = useRouter();
+	const useCookie = useUtils().useCookie;
 	const storeUser = useStoreUser();
 	const storeHeader = useStoreHeader();
 	const getHeaders = computed(()=> storeHeader.getHeaders);
@@ -52,7 +53,7 @@
 		storeHeader.setHeaderActive(header.id);
 	};
 	const logout = ()=> {
-		new UtilsCookie().deleteCookie('token');
+		useCookie.deleteCookie('token');
 		sessionStorage.removeItem('userInfo');
 		storeUser.setIsLogin(false);
 		router.push('/');
@@ -94,7 +95,7 @@
 
 	onMounted(()=> {
 		storeHeader.callHeaders();
-		const token = new UtilsCookie().getCookie('token');
+		const token = useCookie.getCookie('token');
 		
 		if(token!=='') {
 			storeUser.setIsLogin(true);
@@ -102,7 +103,7 @@
 	});
 </script>
 
-<style>
+<style scoped>
 	nav-link:visited {
 
 	}

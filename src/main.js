@@ -8,6 +8,5 @@ import App from './App.vue'
 
 const app = createApp(App);
 
-axiosConfig();
-app.use(createPinia()).use(router);
+app.use(axiosConfig()).use(createPinia()).use(router);
 app.mount('#app');

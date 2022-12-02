@@ -1,7 +1,8 @@
 import { defineStore } from "pinia"
 import axios from "axios";
-import UtilsCookie from '@/assets/common/UtilsCookie';
+import {useUtils} from '@/composables/useUtils.js';
 
+const useCookie = useUtils().useCookie;
 export const useStoreUser = defineStore('useStoreUser', {
 	state : ()=> {
 		return {
@@ -19,7 +20,7 @@ export const useStoreUser = defineStore('useStoreUser', {
 					const userInfo = res.data || '';
 
 					if(userInfo.token!=='' && userInfo.token!==null) {
-						new UtilsCookie().setCookie('token', userInfo.token);
+						useCookie.setCookie('token', userInfo.token);
 						sessionStorage.setItem('userInfo', JSON.stringify(userInfo));
 
 						if(data.rememberMe) {
