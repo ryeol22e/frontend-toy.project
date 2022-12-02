@@ -5,10 +5,12 @@ export const useStoreHeader = defineStore('useStoreHeader', {
 	state : ()=>({
 		headers : [],
 		mypageList : [],
+		searchWord : '',
 	}),
 	getters : {
 		getHeaders : state=> state.headers,
 		getMypageList : state=> state.mypageList,
+		getSearchWord : state=> state.searchWord,
 
 	},
 	actions : {
@@ -32,6 +34,16 @@ export const useStoreHeader = defineStore('useStoreHeader', {
 				params : param
 			}).then(res=> res.data)
 			.catch(error=> console.log(error));
+		},
+		async setSearchWord(word) {
+			this.searchWord = await axios.post('/search/'.concat(word), { 
+				word,
+			})
+			.then(res=> res.data)
+			.catch(error=> {
+				alert(error.message);
+				return '';
+			});
 		}
 	}
 });

@@ -1,13 +1,15 @@
-import { createRouter, createWebHistory } from "vue-router";
-import { nextTick } from "vue";
 import axios from "axios";
-import {useUtils} from '../composables/useUtils.js';
-import authenticationUrl from '../assets/common/authenticationUrl';
-import { useStoreUser } from "../store/useStoreUser";
-import main from './main';
-import board from './board';
+import { nextTick } from "vue";
+import { createRouter, createWebHistory } from "vue-router";
+import {useUtils} from '@/composables/useUtils.js';
+import { useStoreUser } from "@/store/useStoreUser.js";
+import authenticationUrl from '@/assets/common/authenticationUrl.js';
+
+import main from './main.js';
+import board from './board.js';
 
 const useCookie = useUtils().useCookie;
+const useIsEmpty = useUtils().useIsEmpty;
 const routes = [
 	{
 		path : '/:pathMatch(.*)*',
@@ -46,7 +48,7 @@ router.beforeEach((to, from, next)=> {
 	const userInfo = JSON.parse(sessionStorage.getItem('userInfo'));
 	const authFlag = authenticationUrl(to.path);
 	
-	if(token!=='' && userInfo!==null) {
+	if(!useIsEmpty(token) && !useIsEmpty(userInfo)) {
 		axios.defaults.headers.common['Authorization'] = 'Bearer '.concat(token);
 		axios.defaults.headers.common['MemberId'] = userInfo.loginId;
 	} else {
@@ -57,20 +59,19 @@ router.beforeEach((to, from, next)=> {
 	if(!authFlag) {
 		next();
 	} else {
-		axios
-			.get('/auth/check')
-			.then(res=> {
-				next();
-			})
-			.catch(error=> {
-				const useUser = useStoreUser();
+		axios.get('/auth/check')
+		.then(res=> {
+			next();
+		})
+		.catch(error=> {
+			const useUser = useStoreUser();
 
-				useUser.setIsLogin(false);
-				useCookie.deleteCookie('token');
-				sessionStorage.removeItem('userInfo');
-				
-				next('/login');
-			});
+			useUser.setIsLogin(false);
+			useCookie.deleteCookie('token');
+			sessionStorage.removeItem('userInfo');
+			
+			next('/login');
+		});
 	}
 });
 router.afterEach(to=> {

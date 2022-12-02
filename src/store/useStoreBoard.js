@@ -2,10 +2,17 @@ import { defineStore } from "pinia";
 import axios from 'axios';
 import router from '@/router/index.js';
 
+const userInfo = JSON.parse(sessionStorage.getItem('userInfo'));
 export const useStoreBoard = defineStore('useStoreBoard', {
 	state : ()=> ({
 		boardList : [],
-		boardDetail : {},
+		boardDetail : {
+			title : '',
+			content : '',
+			image : null,
+			writer : userInfo.loginId,
+			type : '',
+		},
 	}),
 	getters : {
 		getBoardList : state=> state.boardList,

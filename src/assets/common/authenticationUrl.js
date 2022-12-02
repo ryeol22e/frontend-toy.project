@@ -7,7 +7,7 @@ export default (path)=> {
 		
 	];
 
-	for(let i=0 ; i<pathList.length ; i++) {
+	for(let i=0, size=pathList.length ; i<size ; i++) {
 		const authUrl = pathList[i];
 		
 		if(authUrl===parameter) {
@@ -20,11 +20,11 @@ export default (path)=> {
 					boolResult = true;
 					break;
 				} else {
+					let boolAuth = false;
 					const authArr = authUrl.split('/').filter(path=> path!=='');
 					const checkArr = parameter.split('/').filter(path=> path!=='');
-					let boolAuth = false;
 	
-					for(let j=0 ; j<checkArr.length ; j++) {
+					for(let j=0, size=checkArr.length ; j<size ; j++) {
 						const authPath = authArr[j] || '';
 						const checkPath = checkArr[j] || '';
 						

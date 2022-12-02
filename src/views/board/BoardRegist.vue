@@ -1,12 +1,19 @@
 <template>
-	<BaseRegistForm @boardRegist="boardRegist"></BaseRegistForm>
+	<BaseRegistForm :data="data" :type="type" @boardRegist="boardRegist"/>
 </template>
 
 <script setup>
+	import { computed, onMounted } from 'vue';
+	import { useRoute } from 'vue-router';
+	import {useUtils} from '@/composables/useUtils.js';
 	import {useStoreBoard} from '@/store/useStoreBoard.js';
 	import BaseRegistForm from '@/components/board/BaseRegistForm.vue';
 
+	const route = useRoute();
 	const useBoard = useStoreBoard();
+	const useIsEmpty = useUtils().useIsEmpty;
+	const data = computed(()=> useBoard.getBoardDetail);
+	const type = route.params.type;
 	const validate = (data)=> {
 		if(data.title==='') {
 			alert('제목을 입력해주세요.');
@@ -44,6 +51,13 @@
 
 		return form;
 	};
+
+	onMounted(()=> {
+		if(!useIsEmpty(route.query.boardSeq)) {
+			const url = type==='qna' ? '/boards/qna/list/ ' : '/boards/comm/list/';
+			useBoard.setBoardDetail(url.concat(route.query.boardSeq));
+		}
+	});
 </script>
 
 <style scoped>

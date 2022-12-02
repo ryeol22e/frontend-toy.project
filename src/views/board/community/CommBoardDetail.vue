@@ -1,6 +1,6 @@
 <template>	
 	<div>
-		<BaseBoardDetail :boardInfo="boardInfo" :memberInfo="memberInfo" @delBoard="delBoard"/>
+		<BaseBoardDetail :boardInfo="boardInfo" :memberInfo="memberInfo" type="community" @delBoard="delBoard"/>
 	</div>
 </template>
 
