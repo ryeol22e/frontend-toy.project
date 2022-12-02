@@ -1,10 +1,10 @@
 <template>
-	<RegistForm @boardRegist="boardRegist"></RegistForm>
+	<BaseRegistForm @boardRegist="boardRegist"></BaseRegistForm>
 </template>
 
 <script setup>
 	import {useStoreBoard} from '@/store/useStoreBoard.js';
-	import RegistForm from '@/components/board/RegistForm.vue';
+	import BaseRegistForm from '@/components/board/BaseRegistForm.vue';
 
 	const useBoard = useStoreBoard();
 	const validate = (data)=> {
@@ -46,6 +46,6 @@
 	};
 </script>
 
-<style>
+<style scoped>
 
 </style>

@@ -7,10 +7,9 @@
 </template>
 
 <script setup>
-	import { onMounted, computed } from 'vue';
+	import { computed, onMounted } from 'vue';
 	import {useStoreBoard} from '@/store/useStoreBoard.js';
 	import BaseBoardList from '@/components/board/BaseBoardList.vue';
-	import axios from 'axios';
 
 	const useBoard = useStoreBoard();
 	const boardList = computed(()=> useBoard.getBoardList);
