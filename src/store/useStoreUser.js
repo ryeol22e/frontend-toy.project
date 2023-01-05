@@ -3,6 +3,11 @@ import axios from "axios";
 import {useUtils} from '@/composables/useUtils.js';
 
 const useCookie = useUtils().useCookie;
+// const member = axios.create({
+// 	baseURL : import.meta.env.VITE_APP_API_URL_WEBFLUX,
+// 	timeout : 1000,
+// });
+
 export const useStoreUser = defineStore('useStoreUser', {
 	state : ()=> ({
 		isLogin : false,
