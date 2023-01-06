@@ -33,6 +33,8 @@ export const useStoreBoard = defineStore('useStoreBoard', {
 			});
 		},
 		async registImageBoard(type, formData) {
+			formData.get('writer', userInfo.loginId);
+
 			axios.post('/boards/regist/'.concat(type), formData, {
 				headers : {
 					'Content-Type' : 'multipart/form-data',
@@ -51,6 +53,8 @@ export const useStoreBoard = defineStore('useStoreBoard', {
 			});
 		},
 		async registGeneralBoard(type, data) {
+			data.writer = userInfo.loginId;
+			
 			axios.post('/boards/regist/'.concat(type), data)
 			.then(res=> {
 				const result = res.data;

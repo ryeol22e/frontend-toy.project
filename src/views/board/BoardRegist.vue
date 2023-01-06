@@ -42,7 +42,7 @@
 		const form = new FormData();
 		const keyList = Object.keys(data);
 
-		for(let i=0 ; i<keyList.length ; i++) {
+		for(let i=0, length=keyList.length ; i<length ; i++) {
 			const key = keyList[i];
 			const value = data[key];
 

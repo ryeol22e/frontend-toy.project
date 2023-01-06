@@ -21,7 +21,7 @@
 		boardList : Array,
 		detailName : String,
 	});
-	const isAdmin = ref(JSON.parse(sessionStorage.getItem('userInfo'))?.loginId==='jaeryeol@3top.co.kr' || false);
+	const isAdmin = ref(location.pathname.includes('qna') ? JSON.parse(sessionStorage.getItem('userInfo'))?.loginId==='jaeryeol@3top.co.kr' || false : true);
 	const clickRegist = ()=> {
 		let inType = String(route.path);
 		
