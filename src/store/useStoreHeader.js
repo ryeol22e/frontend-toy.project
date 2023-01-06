@@ -15,13 +15,13 @@ export const useStoreHeader = defineStore('useStoreHeader', {
 	},
 	actions : {
 		async callHeaders() {
-			this.headers = await axios.get('/common/headers', {
+			await axios.get('/common/headers', {
 				params : {
 					commonType : 'header',
 					useYn : 'Y',
 				}
 			})
-			.then(res=> res.data)
+			.then(res=> this.headers = res.data)
 			.catch(error=> console.log(error));
 		},
 		setHeaderActive(id) {
@@ -29,21 +29,18 @@ export const useStoreHeader = defineStore('useStoreHeader', {
 				h.active = h.id===id ? true : false;
 			});
 		},
-		setMypageList(param) {
-			this.mypageList = axios.get('/display/corner', {
+		async setMypageList(param) {
+			axios.get('/display/corner', {
 				params : param
-			}).then(res=> res.data)
+			}).then(res=> this.mypageList = res.data)
 			.catch(error=> console.log(error));
 		},
 		async setSearchWord(word) {
-			this.searchWord = await axios.post('/search/'.concat(word), { 
+			await axios.post('/search/'.concat(word), { 
 				word,
 			})
-			.then(res=> res.data)
-			.catch(error=> {
-				alert(error.message);
-				return '';
-			});
+			.then(res=> this.searchWord = res.data)
+			.catch(error=> alert(error.message));
 		}
 	}
 });

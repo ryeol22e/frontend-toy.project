@@ -20,21 +20,19 @@ export const useStoreBoard = defineStore('useStoreBoard', {
 	},
 	actions : {
 		async setBoardList(url) {
-			this.boardList = await axios.get(url)
-				.then(res=> res.data)
-				.catch(error=> {
-					alert(error.message);
-				});
+			await axios.get(url)
+			.then(res=> this.boardList = res.data)
+			.catch(error=> alert(error.message));
 		},
 		async setBoardDetail(url) {
-			this.boardDetail = await axios.get(url)
-			.then(res=> res.data)
+			await axios.get(url)
+			.then(res=> this.boardDetail = res.data)
 			.catch(error=> {
 				alert(error.message);
 				router.go(-1);
 			});
 		},
-		registImageBoard(type, formData) {
+		async registImageBoard(type, formData) {
 			axios.post('/boards/regist/'.concat(type), formData, {
 				headers : {
 					'Content-Type' : 'multipart/form-data',
@@ -52,7 +50,7 @@ export const useStoreBoard = defineStore('useStoreBoard', {
 				alert(error.message);
 			});
 		},
-		registGeneralBoard(type, data) {
+		async registGeneralBoard(type, data) {
 			axios.post('/boards/regist/'.concat(type), data)
 			.then(res=> {
 				const result = res.data;
@@ -66,19 +64,19 @@ export const useStoreBoard = defineStore('useStoreBoard', {
 				alert(error.message);
 			});
 		},
-		delBoardData(url) {
+		async delBoardData(url) {
 			axios.delete(url)
-				.then(res=> {
-					const result = res.data;
+			.then(res=> {
+				const result = res.data;
 
-					if(result) {
-						alert('삭제되었습니다.');
-					}
-				})
-				.catch(error=> console.log(error))
-				.finally(()=> {
-					router.go(-1);
-				})
+				if(result) {
+					alert('삭제되었습니다.');
+				}
+			})
+			.catch(error=> console.log(error))
+			.finally(()=> {
+				router.go(-1);
+			});
 		}
 	}
 });

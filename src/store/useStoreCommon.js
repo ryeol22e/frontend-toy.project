@@ -9,10 +9,10 @@ export const useStoreCommon = defineStore('useStoreCommon', {
 		getStr : state=> state.str,
 	},
 	actions : {
-		setStr() {
-			this.str = axios.get('/common/clicks')
-				.then(res=> res.data)
-				.catch(error=> console.log(error));
+		async setStr() {
+			await axios.get('/common/clicks')
+			.then(res=> this.str = res.data)
+			.catch(error=> console.log(error));
 		}
 	}
 })
