@@ -18,28 +18,28 @@ export const useStoreUser = defineStore('useStoreUser', {
 	actions : {
 		async setLogin(data) {
 			this.isLogin = await axios.post('/member/login', data)
-				.then(res=> {
-					let flag = false;
-					const userInfo = res.data || '';
+			.then(res=> {
+				let flag = false;
+				const userInfo = res.data || '';
 
-					if(userInfo.token!=='' && userInfo.token!==null) {
-						useCookie.setCookie('token', userInfo.token);
-						sessionStorage.setItem('userInfo', JSON.stringify(userInfo));
+				if(userInfo.token!=='' && userInfo.token!==null) {
+					useCookie.setCookie('token', userInfo.token);
+					sessionStorage.setItem('userInfo', JSON.stringify(userInfo));
 
-						if(data.rememberMe) {
-							localStorage.setItem('loginId', data.loginId);
-						}
-
-						flag = true;
+					if(data.rememberMe) {
+						localStorage.setItem('loginId', data.loginId);
 					}
 
-					return flag;
-				})
-				.catch((error)=> {
-					alert('로그인 실패하였습니다.');
-					console.error(error);
-					return false;
-				});
+					flag = true;
+				}
+
+				return flag;
+			})
+			.catch((error)=> {
+				alert('로그인 실패하였습니다.');
+				console.error(error);
+				return false;
+			});
 		},
 		setIsLogin(flag) {
 			this.isLogin = flag;
