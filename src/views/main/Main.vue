@@ -35,7 +35,22 @@
 </template>
 
 <script setup>
-	
+	import { ref, onMounted, onUnmounted } from 'vue';
+	const x = ref(0);
+	const y = ref(0);
+	const onScroll = e=> {
+		x.value = window.scrollX;
+		x.value = window.scrollY;
+	};
+
+	// 스크롤 이벤트 바인딩
+	onMounted(()=> {
+		window.addEventListener('scroll', onScroll);
+	});
+	// main.vue 떠날때 이벤트 해제.
+	onUnmounted(()=> {
+		window.removeEventListener('scroll', onScroll);
+	})
 </script>
 
 <style scoped>
